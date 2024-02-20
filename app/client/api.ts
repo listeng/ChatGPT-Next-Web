@@ -99,6 +99,29 @@ export class ClientApi {
 
   masks() {}
 
+  async login(username: string, password: string) {
+    const res = await fetch('/api/login', {
+      body: JSON.stringify({
+        username: username,
+        password: password,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "POST",
+    });
+
+    console.log('logined')
+    console.log(res)
+
+    if (res.ok) {
+      const resJson = await res.json();
+      return resJson;
+    } else {
+      return {code: false}
+    }
+  }
+
   async share(messages: ChatMessage[], avatarUrl: string | null = null) {
     const msgs = messages
       .map((m) => ({

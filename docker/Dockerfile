@@ -1,0 +1,14 @@
+FROM node:18-alpine
+
+WORKDIR /app
+
+ENV PROXY_URL=""
+ENV OPENAI_API_KEY=""
+ENV GOOGLE_API_KEY=""
+ENV CODE=""
+
+COPY ./app .
+
+EXPOSE 3000
+
+CMD node server.js

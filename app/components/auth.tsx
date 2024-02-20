@@ -7,15 +7,32 @@ import { useAccessStore } from "../store";
 import Locale from "../locales";
 
 import BotIcon from "../icons/bot.svg";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { getClientConfig } from "../config/client";
+import { ClientApi } from "../client/api";
+import { showToast } from "../components/ui-lib";
 
 export function AuthPage() {
   const navigate = useNavigate();
   const accessStore = useAccessStore();
 
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+
   const goHome = () => navigate(Path.Home);
-  const goChat = () => navigate(Path.Chat);
+  const goChat = async () => {
+    const api: ClientApi = new ClientApi();
+    const result = await api.login(username, password);
+
+    if (result.code) {
+      accessStore.update((access) => {
+        access.accessCode = result.token;
+      });
+      navigate(Path.Chat)
+    } else {
+      showToast(Locale.Auth.Error);
+    }
+  };
   const resetAccessCode = () => {
     accessStore.update((access) => {
       access.openaiApiKey = "";
@@ -41,48 +58,28 @@ export function AuthPage() {
 
       <input
         className={styles["auth-input"]}
-        type="password"
-        placeholder={Locale.Auth.Input}
-        value={accessStore.accessCode}
+        type="text"
+        placeholder={Locale.Auth.Username}
+        value={username}
         onChange={(e) => {
-          accessStore.update(
-            (access) => (access.accessCode = e.currentTarget.value),
-          );
+          setUsername(e.target.value);
         }}
       />
-      {!accessStore.hideUserApiKey ? (
-        <>
-          <div className={styles["auth-tips"]}>{Locale.Auth.SubTips}</div>
-          <input
-            className={styles["auth-input"]}
-            type="password"
-            placeholder={Locale.Settings.Access.OpenAI.ApiKey.Placeholder}
-            value={accessStore.openaiApiKey}
-            onChange={(e) => {
-              accessStore.update(
-                (access) => (access.openaiApiKey = e.currentTarget.value),
-              );
-            }}
-          />
-          <input
-            className={styles["auth-input"]}
-            type="password"
-            placeholder={Locale.Settings.Access.Google.ApiKey.Placeholder}
-            value={accessStore.googleApiKey}
-            onChange={(e) => {
-              accessStore.update(
-                (access) => (access.googleApiKey = e.currentTarget.value),
-              );
-            }}
-          />
-        </>
-      ) : null}
+      <input
+        className={styles["auth-input"]}
+        type="password"
+        placeholder={Locale.Auth.Password}
+        value={password}
+        onChange={(e) => {
+          setPassword(e.target.value);
+        }}
+      />
 
       <div className={styles["auth-actions"]}>
         <IconButton
           text={Locale.Auth.Confirm}
           type="primary"
-          onClick={goChat}
+          onClick={async () => {await goChat()}}
         />
         <IconButton
           text={Locale.Auth.Later}

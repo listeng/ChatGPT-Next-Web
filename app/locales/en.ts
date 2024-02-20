@@ -14,11 +14,14 @@ const en: LocaleType = {
   },
   Auth: {
     Title: "Need Access Code",
+    Username: "Username",
+    Password: "Password",
     Tips: "Please enter access code below",
     SubTips: "Or enter your OpenAI or Google API Key",
     Input: "access code",
     Confirm: "Confirm",
     Later: "Later",
+    Error: "Login Failed",
   },
   ChatItem: {
     ChatItemCount: (count: number) => `${count} messages`,

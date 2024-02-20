@@ -9,6 +9,9 @@ declare global {
       OPENAI_API_KEY?: string;
       CODE?: string;
 
+      ONEAPI_BACKEND_URL?: string;
+      CHATKEY_AESKEY?: string;
+
       BASE_URL?: string;
       OPENAI_ORG_ID?: string; // openai only
 
@@ -76,6 +79,9 @@ export const getServerSideConfig = () => {
   );
 
   return {
+    oneapi_backend_url: process.env.ONEAPI_BACKEND_URL,
+    chatkey_aeskey: process.env.CHATKEY_AESKEY,
+
     baseUrl: process.env.BASE_URL,
     apiKey,
     openaiOrgId: process.env.OPENAI_ORG_ID,
@@ -91,7 +97,7 @@ export const getServerSideConfig = () => {
 
     gtmId: process.env.GTM_ID,
 
-    needCode: ACCESS_CODES.size > 0,
+    needCode: true,//ACCESS_CODES.size > 0,
     code: process.env.CODE,
     codes: ACCESS_CODES,
 

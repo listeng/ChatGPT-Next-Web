@@ -304,7 +304,7 @@ export const useChatStore = createPersistStore(
 
         var api: ClientApi;
         if (modelConfig.model === "gemini-pro") {
-          api = new ClientApi(ModelProvider.GeminiPro);
+          api = new ClientApi(ModelProvider.GPT);
         } else {
           api = new ClientApi(ModelProvider.GPT);
         }
@@ -489,7 +489,7 @@ export const useChatStore = createPersistStore(
 
         var api: ClientApi;
         if (modelConfig.model === "gemini-pro") {
-          api = new ClientApi(ModelProvider.GeminiPro);
+          api = new ClientApi(ModelProvider.GPT);
         } else {
           api = new ClientApi(ModelProvider.GPT);
         }
