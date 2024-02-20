@@ -73,6 +73,11 @@ export function AuthPage() {
         onChange={(e) => {
           setPassword(e.target.value);
         }}
+        onKeyDown={async (e) => {
+          if (e.key === 'Enter') {
+            await goChat();
+          }
+        }}
       />
 
       <div className={styles["auth-actions"]}>

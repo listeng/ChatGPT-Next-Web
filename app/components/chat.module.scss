@@ -4,6 +4,14 @@
   display: flex;
   flex-wrap: wrap;
 
+  .chat-input-action-dynamic-width {
+    width: var(--icon-width);
+  }
+
+  .chat-input-action-static-width {
+    width: var(--full-width);
+  }
+
   .chat-input-action {
     display: inline-flex;
     border-radius: 20px;
@@ -17,7 +25,6 @@
     transition: width ease 0.3s;
     align-items: center;
     height: 16px;
-    width: var(--icon-width);
     overflow: hidden;
 
     &:not(:last-child) {
@@ -31,6 +38,11 @@
       transform: translateX(-5px);
       transition: all ease 0.3s;
       pointer-events: none;
+    }
+
+    .text-static {
+      opacity: 1;
+      transform: translate(0);
     }
 
     &:hover {

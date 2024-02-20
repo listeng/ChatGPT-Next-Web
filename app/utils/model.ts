@@ -14,11 +14,13 @@ export function collectModelTable(
     }
   > = {};
 
+  console.log(models);
+
   // default models
   models.forEach((m) => {
     modelTable[m.name] = {
       ...m,
-      displayName: m.name, // 'provider' is copied over if it exists
+      displayName: m.title? m.title: m.name, // 'provider' is copied over if it exists
     };
   });
 

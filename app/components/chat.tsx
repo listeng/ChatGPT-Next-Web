@@ -330,6 +330,7 @@ function ChatAction(props: {
   text: string;
   icon: JSX.Element;
   onClick: () => void;
+  alwayShow?: boolean;
 }) {
   const iconRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
@@ -349,9 +350,15 @@ function ChatAction(props: {
     });
   }
 
+  useEffect(() => {
+    if (props.alwayShow) {
+      updateWidth();
+    }
+  }, [props.alwayShow, props.text]);
+
   return (
     <div
-      className={`${styles["chat-input-action"]} clickable`}
+      className={`${styles["chat-input-action"]} clickable ` + (props.alwayShow ? styles["chat-input-action-static-width"]: styles["chat-input-action-dynamic-width"])}
       onClick={() => {
         props.onClick();
         setTimeout(updateWidth, 1);
@@ -368,7 +375,7 @@ function ChatAction(props: {
       <div ref={iconRef} className={styles["icon"]}>
         {props.icon}
       </div>
-      <div className={styles["text"]} ref={textRef}>
+      <div className={styles["text"] + ' ' + (props.alwayShow ? styles["text-static"]: '')} ref={textRef}>
         {props.text}
       </div>
     </div>
@@ -524,6 +531,7 @@ export function ChatActions(props: {
         onClick={() => setShowModelSelector(true)}
         text={currentModel}
         icon={<RobotIcon />}
+        alwayShow={true}
       />
 
       {showModelSelector && (

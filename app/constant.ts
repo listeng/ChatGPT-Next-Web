@@ -146,15 +146,17 @@ export const DEFAULT_MODELS = [
   {
     name: "SparkDesk3",
     available: true,
+    title: "讯飞星火 v3",
     provider: {
       id: "SparkDesk3",
-      providerName: "讯飞星火3",
+      providerName: "讯飞",
       providerType: "openai",
     },
   },
   {
     name: "ERNIE-Bot",
     available: true,
+    title: "文心一言 v3",
     provider: {
       id: "ERNIE-Bot",
       providerName: "百度",
@@ -164,6 +166,7 @@ export const DEFAULT_MODELS = [
   {
     name: "ERNIE-Bot-4",
     available: true,
+    title: "文心一言 v4",
     provider: {
       id: "ERNIE-Bot-4",
       providerName: "百度",
