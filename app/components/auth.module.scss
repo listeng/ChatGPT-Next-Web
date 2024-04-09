@@ -21,7 +21,7 @@
   }
 
   .auth-input {
-    margin: 3vh 0;
+    margin: 2vh 0;
   }
 
   .auth-actions {
@@ -29,8 +29,18 @@
     justify-content: center;
     flex-direction: column;
 
-    button:not(:last-child) {
+    button {
       margin-bottom: 10px;
+    }
+  }
+
+  .auth-other {
+    display: flex;
+    flex-direction: row;
+    margin-top: 10px;
+
+    button {
+      margin: auto 10px;
     }
   }
 }

@@ -137,6 +137,44 @@ export class ClientApi {
     }
   }
 
+  async loginRedirectUrl() {
+    const res = await fetch('/api/qylogin', {
+      method: "GET",
+    });
+
+    if (res.ok) {
+      const resJson = await res.json();
+      return resJson;
+    } else {
+      return {code: false}
+    }
+    // return {
+    //   data: 'http://localhost:3000/#/auth?code=5678&_t=' + Date.now()
+    // }
+  }
+
+  async loginQYChat(code: string) {
+    const res = await fetch('/api/qylogin', {
+      body: JSON.stringify({
+        code: code,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "POST",
+    });
+
+    console.log('logined')
+    console.log(res)
+
+    if (res.ok) {
+      const resJson = await res.json();
+      return resJson;
+    } else {
+      return {code: false}
+    }
+  }
+
   async share(messages: ChatMessage[], avatarUrl: string | null = null) {
     const msgs = messages
       .map((m) => ({

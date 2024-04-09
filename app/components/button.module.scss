@@ -28,6 +28,16 @@
     }
   }
 
+  &.qywechat {
+    background-color: #3C8DEC;
+
+    color: white;
+
+    path {
+      fill: white !important;
+    }
+  }
+
   &.danger {
     color: rgba($color: red, $alpha: 0.8);
     border-color: rgba($color: red, $alpha: 0.5);

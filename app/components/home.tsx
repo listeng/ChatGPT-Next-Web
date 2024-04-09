@@ -132,7 +132,7 @@ function Screen() {
     getClientConfig()?.isApp || (config.tightBorder && !isMobileScreen);
 
   useEffect(() => {
-    loadAsyncGoogleFont();
+    //loadAsyncGoogleFont();
   }, []);
 
   return (
