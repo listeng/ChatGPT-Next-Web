@@ -66,6 +66,13 @@ export async function auth(req: NextRequest, modelProvider: ModelProvider) {
   console.log("[User IP] ", getIP(req));
   console.log("[Time] ", new Date().toLocaleString());
 
+  if (accessCode.length < 15) {
+    return {
+      error: true,
+      msg: "you are not allowed to access with this key",
+    }
+  }
+
   // 发送POST请求
   const response = await fetch((serverConfig.oneapi_backend_url || ONEAPI_BACKEND_URL) + "/api/chatkey?key=" + accessCode, {
     method: "POST",
