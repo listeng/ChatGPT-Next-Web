@@ -51,6 +51,7 @@ import Locale, {
 import { copyToClipboard } from "../utils";
 import Link from "next/link";
 import {
+  Anthropic,
   Azure,
   Google,
   OPENAI_BASE_URL,
@@ -658,7 +659,9 @@ export function Settings() {
             >
               <div
                 className={styles.avatar}
-                onClick={() => setShowEmojiPicker(true)}
+                onClick={() => {
+                  setShowEmojiPicker(!showEmojiPicker);
+                }}
               >
                 <Avatar avatar={config.avatar} />
               </div>

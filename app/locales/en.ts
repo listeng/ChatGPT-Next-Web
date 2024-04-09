@@ -68,6 +68,7 @@ const en: LocaleType = {
       Masks: "Masks",
       Clear: "Clear Context",
       Settings: "Settings",
+      UploadImage: "Upload Images",
     },
     Rename: "Rename Chat",
     Typing: "Typing…",
@@ -318,6 +319,24 @@ const en: LocaleType = {
           SubTitle: "Check your api version from azure console",
         },
       },
+      Anthropic: {
+        ApiKey: {
+          Title: "Anthropic API Key",
+          SubTitle:
+            "Use a custom Anthropic Key to bypass password access restrictions",
+          Placeholder: "Anthropic API Key",
+        },
+
+        Endpoint: {
+          Title: "Endpoint Address",
+          SubTitle: "Example:",
+        },
+
+        ApiVerion: {
+          Title: "API Version (claude api version)",
+          SubTitle: "Select and input a specific API version",
+        },
+      },
       CustomModel: {
         Title: "Custom Models",
         SubTitle: "Custom model options, seperated by comma",
@@ -325,8 +344,7 @@ const en: LocaleType = {
       Google: {
         ApiKey: {
           Title: "API Key",
-          SubTitle:
-            "Obtain your API Key from Google AI",
+          SubTitle: "Obtain your API Key from Google AI",
           Placeholder: "Enter your Google AI Studio API Key",
         },
 
