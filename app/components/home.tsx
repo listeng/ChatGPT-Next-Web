@@ -155,6 +155,8 @@ function Screen() {
 
     if (location.pathname === Path.Home) {
       setIsHome(true);
+    } else {
+      setIsHome(false);
     }
   }, [location]);
 
