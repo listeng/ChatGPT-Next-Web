@@ -21,6 +21,7 @@ const cn = {
     ConfirmQYWechat: "企业微信登录",
     Later: "稍后再说",
     Error: "登录失败！",
+    Success: "登录成功！",
   },
   ChatItem: {
     ChatItemCount: (count: number) => `${count} 条对话`,

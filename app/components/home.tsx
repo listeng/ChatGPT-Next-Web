@@ -125,15 +125,38 @@ const loadAsyncGoogleFont = () => {
 function Screen() {
   const config = useAppConfig();
   const location = useLocation();
-  const isHome = location.pathname === Path.Home;
-  const isAuth = location.pathname === Path.Auth;
   const isMobileScreen = useMobileScreen();
   const shouldTightBorder =
     getClientConfig()?.isApp || (config.tightBorder && !isMobileScreen);
 
+
+  console.log(location.pathname)
+  const [isAuth, setIsAuth] = useState(false);
+  const [isHome, setIsHome] = useState(false);
+
   useEffect(() => {
     //loadAsyncGoogleFont();
-  }, []);
+
+    const ps = window.location.href.split('?');
+    if (ps.length > 1) {
+      const searchParams = new URLSearchParams(ps[1]);
+
+      const codeParam = searchParams.get('code') || '';
+      if (codeParam) {
+        setIsAuth(true)
+      }
+    } else if (location.pathname === Path.Auth) {
+      setIsAuth(true)
+    } else {
+      setIsAuth(false);
+    }
+
+    console.log('isAuth ' + isAuth)
+
+    if (location.pathname === Path.Home) {
+      setIsHome(true);
+    }
+  }, [location]);
 
   return (
     <div

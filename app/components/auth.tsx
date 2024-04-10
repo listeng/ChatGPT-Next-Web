@@ -20,7 +20,9 @@ export function AuthPage() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-  const goHome = () => navigate(Path.Home);
+  const goHome = () => {
+    navigate(Path.Chat)
+  };
   const goChat = async () => {
     const api: ClientApi = new ClientApi();
     const result = await api.login(username, password);
@@ -50,8 +52,10 @@ export function AuthPage() {
       accessStore.update((access) => {
         access.accessCode = result.token;
       });
-      navigate(Path.Chat)
+      window.location.href = '/';
+      showToast(Locale.Auth.Success);
     } else {
+      window.location.href = '/#/auth';
       showToast(Locale.Auth.Error);
     }
   }

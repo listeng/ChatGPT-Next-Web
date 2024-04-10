@@ -23,6 +23,7 @@ const en: LocaleType = {
     ConfirmQYWechat: "QY Wechat Login",
     Later: "Later",
     Error: "Login Failed",
+    Success: "Login Success",
   },
   ChatItem: {
     ChatItemCount: (count: number) => `${count} messages`,
