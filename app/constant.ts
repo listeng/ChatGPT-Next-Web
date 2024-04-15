@@ -198,6 +198,16 @@ export const DEFAULT_MODELS = [
       providerType: "openai",
     },
   },
+  {
+    name: "moonshot-v1-8k",
+    available: true,
+    title: "Kimi 8k",
+    provider: {
+      id: "moonshot-v1-8k",
+      providerName: "Kimi",
+      providerType: "openai",
+    },
+  },
 ] as const;
 
 export const CHAT_PAGE_SIZE = 15;
