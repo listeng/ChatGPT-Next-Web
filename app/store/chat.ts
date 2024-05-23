@@ -364,7 +364,7 @@ export const useChatStore = createPersistStore(
         });
 
         var api: ClientApi;
-        if (modelConfig.model === "gemini-pro") {
+        if (modelConfig.model.startsWith("gemini")) {
           api = new ClientApi(ModelProvider.GPT);
         } else if (modelConfig.model.startsWith("claude")) {
           api = new ClientApi(ModelProvider.Claude);
@@ -548,7 +548,7 @@ export const useChatStore = createPersistStore(
         const modelConfig = session.mask.modelConfig;
 
         var api: ClientApi;
-        if (modelConfig.model === "gemini-pro") {
+        if (modelConfig.model.startsWith("gemini")) {
           api = new ClientApi(ModelProvider.GPT);
         } else if (modelConfig.model.startsWith("claude")) {
           api = new ClientApi(ModelProvider.Claude);

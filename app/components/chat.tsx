@@ -486,7 +486,7 @@ export function ChatActions(props: {
     const isUnavaliableModel = !models.some((m) => m.name === currentModel);
     if (isUnavaliableModel && models.length > 0) {
       // show next model to default model if exist
-      let nextModel: ModelType = (
+      let nextModel: any = (
         models.find((model) => model.isDefault) || models[0]
       ).name;
       chatStore.updateCurrentSession(
