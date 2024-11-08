@@ -123,7 +123,7 @@ Latex inline: \\(x^2\\)
 Latex block: $$e=mc^2$$
 `;
 
-export const SUMMARIZE_MODEL = "gpt-4o";
+export const SUMMARIZE_MODEL = "gpt-4o-mini";
 export const GEMINI_SUMMARIZE_MODEL = "gemini-pro";
 
 export const KnowledgeCutOffDate: Record<string, string> = {
@@ -190,7 +190,7 @@ export const DEFAULT_MODELS = [
     },
   },
   {
-    name: "gpt-3.5-turbo",
+    name: "gpt-4o-mini",
     available: true,
     provider: {
       id: "openai",
@@ -199,11 +199,21 @@ export const DEFAULT_MODELS = [
     },
   },
   {
-    name: "ERNIE-Bot-4",
+    name: "ERNIE-4.0-Turbo-8K",
+    available: true,
+    title: "文心一言 v4 Turbo 8k",
+    provider: {
+      id: "ERNIE-4.0-Turbo-8K",
+      providerName: "百度",
+      providerType: "openai",
+    },
+  },
+  {
+    name: "ERNIE-4.0-8K-Latest",
     available: true,
     title: "文心一言 v4",
     provider: {
-      id: "ERNIE-Bot-4",
+      id: "ERNIE-4.0-8K-Latest",
       providerName: "百度",
       providerType: "openai",
     },
