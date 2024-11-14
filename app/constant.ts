@@ -228,6 +228,16 @@ export const DEFAULT_MODELS = [
       providerType: "openai",
     },
   },
+  {
+    name: "grok",
+    available: true,
+    title: "Grok-beta",
+    provider: {
+      id: "grok",
+      providerName: "X",
+      providerType: "openai",
+    },
+  },
 ] as const;
 
 export const CHAT_PAGE_SIZE = 15;
