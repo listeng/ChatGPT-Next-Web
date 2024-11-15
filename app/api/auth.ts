@@ -122,5 +122,6 @@ export async function auth(req: NextRequest, modelProvider: ModelProvider) {
 
   return {
     error: false,
+    msg: '',
   };
 }

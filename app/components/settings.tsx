@@ -9,6 +9,7 @@ import CopyIcon from "../icons/copy.svg";
 import ClearIcon from "../icons/clear.svg";
 import LoadingIcon from "../icons/three-dots.svg";
 import EditIcon from "../icons/edit.svg";
+import FireIcon from "../icons/fire.svg";
 import EyeIcon from "../icons/eye.svg";
 import DownloadIcon from "../icons/download.svg";
 import UploadIcon from "../icons/upload.svg";
@@ -18,7 +19,7 @@ import ConfirmIcon from "../icons/confirm.svg";
 import ConnectionIcon from "../icons/connection.svg";
 import CloudSuccessIcon from "../icons/cloud-success.svg";
 import CloudFailIcon from "../icons/cloud-fail.svg";
-
+import { trackSettingsPageGuideToCPaymentClick } from "../utils/auth-settings-events";
 import {
   Input,
   List,
@@ -48,12 +49,19 @@ import Locale, {
   changeLang,
   getLang,
 } from "../locales";
-import { copyToClipboard } from "../utils";
+import { copyToClipboard, clientUpdate, semverCompare } from "../utils";
 import Link from "next/link";
 import {
   Anthropic,
   Azure,
+  Baidu,
+  Tencent,
+  ByteDance,
+  Alibaba,
+  Moonshot,
+  XAI,
   Google,
+  GoogleSafetySettingsThreshold,
   OPENAI_BASE_URL,
   Path,
   RELEASE_URL,
@@ -61,6 +69,10 @@ import {
   ServiceProvider,
   SlotID,
   UPDATE_URL,
+  Stability,
+  Iflytek,
+  SAAS_CHAT_URL,
+  ChatGLM,
 } from "../constant";
 import { Prompt, SearchService, usePromptStore } from "../store/prompt";
 import { ErrorBoundary } from "./error";
@@ -72,6 +84,8 @@ import { useSyncStore } from "../store/sync";
 import { nanoid } from "nanoid";
 import { useMaskStore } from "../store/mask";
 import { ProviderType } from "../utils/cloud";
+import { TTSConfigList } from "./tts-config";
+import { RealtimeConfigList } from "./realtime-chat/realtime-config";
 
 function EditPromptModal(props: { id: string; onClose: () => void }) {
   const promptStore = usePromptStore();
@@ -238,6 +252,7 @@ function DangerItems() {
         subTitle={Locale.Settings.Danger.Reset.SubTitle}
       >
         <IconButton
+          aria={Locale.Settings.Danger.Reset.Title}
           text={Locale.Settings.Danger.Reset.Action}
           onClick={async () => {
             if (await showConfirm(Locale.Settings.Danger.Reset.Confirm)) {
@@ -252,6 +267,7 @@ function DangerItems() {
         subTitle={Locale.Settings.Danger.Clear.SubTitle}
       >
         <IconButton
+          aria={Locale.Settings.Danger.Clear.Title}
           text={Locale.Settings.Danger.Clear.Action}
           onClick={async () => {
             if (await showConfirm(Locale.Settings.Danger.Clear.Confirm)) {
@@ -500,6 +516,7 @@ function SyncItems() {
         >
           <div style={{ display: "flex" }}>
             <IconButton
+              aria={Locale.Settings.Sync.LocalState + Locale.UI.Export}
               icon={<UploadIcon />}
               text={Locale.UI.Export}
               onClick={() => {
@@ -507,6 +524,7 @@ function SyncItems() {
               }}
             />
             <IconButton
+              aria={Locale.Settings.Sync.LocalState + Locale.UI.Import}
               icon={<DownloadIcon />}
               text={Locale.UI.Import}
               onClick={() => {
@@ -534,7 +552,7 @@ export function Settings() {
   const [checkingUpdate, setCheckingUpdate] = useState(false);
   const currentVersion = updateStore.formatVersion(updateStore.version);
   const remoteId = updateStore.formatVersion(updateStore.remoteVersion);
-  const hasNewVersion = currentVersion !== remoteId;
+  const hasNewVersion = semverCompare(currentVersion, remoteId) === -1;
   const updateUrl = getClientConfig()?.isApp ? RELEASE_URL : UPDATE_URL;
 
   function checkUpdate(force = false) {
@@ -619,6 +637,25 @@ export function Settings() {
   const clientConfig = useMemo(() => getClientConfig(), []);
   const showAccessCode = enabledAccessControl && !clientConfig?.isApp;
 
+  const accessCodeComponent = showAccessCode && (
+    <ListItem
+      title={Locale.Settings.Access.AccessCode.Title}
+      subTitle={Locale.Settings.Access.AccessCode.SubTitle}
+    >
+      <PasswordInput
+        value={accessStore.accessCode}
+        type="text"
+        placeholder={Locale.Settings.Access.AccessCode.Placeholder}
+        onChange={(e) => {
+          accessStore.update(
+            (access) => (access.accessCode = e.currentTarget.value),
+          );
+        }}
+      />
+    </ListItem>
+  );
+
+
   return (
     <ErrorBoundary>
       <div className="window-header" data-tauri-drag-region>
@@ -635,6 +672,7 @@ export function Settings() {
           <div className="window-action-button"></div>
           <div className="window-action-button">
             <IconButton
+              aria={Locale.UI.Close}
               icon={<CloseIcon />}
               onClick={() => navigate(Path.Home)}
               bordered
@@ -658,6 +696,8 @@ export function Settings() {
               open={showEmojiPicker}
             >
               <div
+                aria-label={Locale.Settings.Avatar}
+                tabIndex={0}
                 className={styles.avatar}
                 onClick={() => {
                   setShowEmojiPicker(!showEmojiPicker);
@@ -670,6 +710,7 @@ export function Settings() {
 
           <ListItem title={Locale.Settings.SendKey}>
             <Select
+              aria-label={Locale.Settings.SendKey}
               value={config.submitKey}
               onChange={(e) => {
                 updateConfig(
@@ -688,6 +729,7 @@ export function Settings() {
 
           <ListItem title={Locale.Settings.Theme}>
             <Select
+              aria-label={Locale.Settings.Theme}
               value={config.theme}
               onChange={(e) => {
                 updateConfig(
@@ -705,6 +747,7 @@ export function Settings() {
 
           <ListItem title={Locale.Settings.Lang.Name}>
             <Select
+              aria-label={Locale.Settings.Lang.Name}
               value={getLang()}
               onChange={(e) => {
                 changeLang(e.target.value as any);
@@ -723,6 +766,7 @@ export function Settings() {
             subTitle={Locale.Settings.FontSize.SubTitle}
           >
             <InputRange
+              aria={Locale.Settings.FontSize.Title}
               title={`${config.fontSize ?? 14}px`}
               value={config.fontSize}
               min="12"
@@ -738,10 +782,28 @@ export function Settings() {
           </ListItem>
 
           <ListItem
+            title={Locale.Settings.FontFamily.Title}
+            subTitle={Locale.Settings.FontFamily.SubTitle}
+          >
+            <input
+              aria-label={Locale.Settings.FontFamily.Title}
+              type="text"
+              value={config.fontFamily}
+              placeholder={Locale.Settings.FontFamily.Placeholder}
+              onChange={(e) =>
+                updateConfig(
+                  (config) => (config.fontFamily = e.currentTarget.value),
+                )
+              }
+            ></input>
+          </ListItem>
+
+          <ListItem
             title={Locale.Settings.AutoGenerateTitle.Title}
             subTitle={Locale.Settings.AutoGenerateTitle.SubTitle}
           >
             <input
+              aria-label={Locale.Settings.AutoGenerateTitle.Title}
               type="checkbox"
               checked={config.enableAutoGenerateTitle}
               onChange={(e) =>
@@ -758,12 +820,46 @@ export function Settings() {
             subTitle={Locale.Settings.SendPreviewBubble.SubTitle}
           >
             <input
+              aria-label={Locale.Settings.SendPreviewBubble.Title}
               type="checkbox"
               checked={config.sendPreviewBubble}
               onChange={(e) =>
                 updateConfig(
                   (config) =>
                     (config.sendPreviewBubble = e.currentTarget.checked),
+                )
+              }
+            ></input>
+          </ListItem>
+
+          <ListItem
+            title={Locale.Mask.Config.Artifacts.Title}
+            subTitle={Locale.Mask.Config.Artifacts.SubTitle}
+          >
+            <input
+              aria-label={Locale.Mask.Config.Artifacts.Title}
+              type="checkbox"
+              checked={config.enableArtifacts}
+              onChange={(e) =>
+                updateConfig(
+                  (config) =>
+                    (config.enableArtifacts = e.currentTarget.checked),
+                )
+              }
+            ></input>
+          </ListItem>
+          <ListItem
+            title={Locale.Mask.Config.CodeFold.Title}
+            subTitle={Locale.Mask.Config.CodeFold.SubTitle}
+          >
+            <input
+              aria-label={Locale.Mask.Config.CodeFold.Title}
+              type="checkbox"
+              checked={config.enableCodeFold}
+              data-testid="enable-code-fold-checkbox"
+              onChange={(e) =>
+                updateConfig(
+                  (config) => (config.enableCodeFold = e.currentTarget.checked),
                 )
               }
             ></input>
@@ -778,6 +874,7 @@ export function Settings() {
             subTitle={Locale.Settings.Mask.Splash.SubTitle}
           >
             <input
+              aria-label={Locale.Settings.Mask.Splash.Title}
               type="checkbox"
               checked={!config.dontShowMaskSplashScreen}
               onChange={(e) =>
@@ -795,6 +892,7 @@ export function Settings() {
             subTitle={Locale.Settings.Mask.Builtin.SubTitle}
           >
             <input
+              aria-label={Locale.Settings.Mask.Builtin.Title}
               type="checkbox"
               checked={config.hideBuiltinMasks}
               onChange={(e) =>
@@ -813,6 +911,7 @@ export function Settings() {
             subTitle={Locale.Settings.Prompt.Disable.SubTitle}
           >
             <input
+              aria-label={Locale.Settings.Prompt.Disable.Title}
               type="checkbox"
               checked={config.disablePromptHint}
               onChange={(e) =>
@@ -832,6 +931,7 @@ export function Settings() {
             )}
           >
             <IconButton
+              aria={Locale.Settings.Prompt.List + Locale.Settings.Prompt.Edit}
               icon={<EditIcon />}
               text={Locale.Settings.Prompt.Edit}
               onClick={() => setShowPromptModal(true)}
@@ -853,6 +953,16 @@ export function Settings() {
         {shouldShowPromptModal && (
           <UserPromptModal onClose={() => setShowPromptModal(false)} />
         )}
+        <List>
+          <TTSConfigList
+            ttsConfig={config.ttsConfig}
+            updateConfig={(updater) => {
+              const ttsConfig = { ...config.ttsConfig };
+              updater(ttsConfig);
+              config.update((config) => (config.ttsConfig = ttsConfig));
+            }}
+          />
+        </List>
 
         <DangerItems />
       </div>

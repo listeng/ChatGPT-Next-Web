@@ -49,3 +49,5 @@ docker/app
 docker/README.md
 docker/*.tar
 docker/*.gz
+
+masks.json

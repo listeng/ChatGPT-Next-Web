@@ -1,5 +1,6 @@
 import { getClientConfig } from "../config/client";
 import { SubmitKey } from "../store/config";
+import { SAAS_CHAT_UTM_URL } from "@/app/constant";
 
 const isApp = !!getClientConfig()?.isApp;
 
@@ -7,21 +8,25 @@ const cn = {
   WIP: "该功能仍在开发中……",
   Error: {
     Unauthorized: isApp
-      ? "检测到无效 API Key，请前往[设置](/#/settings)页检查 API Key 是否配置正确。"
-      : "用户未登录，请前往[登录](/#/auth)登录",
+    ? "检测到无效 API Key，请前往[设置](/#/settings)页检查 API Key 是否配置正确。"
+    : "用户未登录，请前往[登录](/#/auth)登录",
   },
   Auth: {
+    Return: "返回",
     Title: "需要登录",
     Username: "用户名",
     Password: "密码",
     Tips: "管理员开启了密码验证，请在下方登录",
-    SubTips: "或者输入你的 OpenAI 或 Google API 密钥",
+    SubTips: "或者输入你的 OpenAI 或 Google AI 密钥",
     Input: "在此处填写访问码",
     Confirm: "确认登录",
     ConfirmQYWechat: "企业微信登录",
     Later: "稍后再说",
     Error: "登录失败！",
     Success: "登录成功！",
+    SaasTips: "配置太麻烦，想要立即使用",
+    TopTips:
+      "🥳 NextChat AI 首发优惠，立刻解锁 OpenAI o1, GPT-4o, Claude-3.5 等最新大模型",
   },
   ChatItem: {
     ChatItemCount: (count: number) => `${count} 条对话`,
@@ -47,6 +52,11 @@ const cn = {
       PinToastAction: "查看",
       Delete: "删除",
       Edit: "编辑",
+      FullScreen: "全屏",
+      RefreshTitle: "刷新标题",
+      RefreshToast: "已发送刷新标题请求",
+      Speech: "朗读",
+      StopSpeech: "停止",
     },
     Commands: {
       new: "新建聊天",
@@ -54,6 +64,7 @@ const cn = {
       next: "下一个聊天",
       prev: "上一个聊天",
       clear: "清除上下文",
+      fork: "复制聊天",
       del: "删除聊天",
     },
     InputActions: {
@@ -80,11 +91,21 @@ const cn = {
       return inputHints + "，/ 触发补全，: 触发命令";
     },
     Send: "发送",
+    StartSpeak: "说话",
+    StopSpeak: "停止",
     Config: {
       Reset: "清除记忆",
       SaveAs: "存为面具",
     },
     IsContext: "预设提示词",
+    ShortcutKey: {
+      Title: "键盘快捷方式",
+      newChat: "打开新聊天",
+      focusInput: "聚焦输入框",
+      copyLastMessage: "复制最后一个回复",
+      copyLastCode: "复制最后一个代码块",
+      showShortcutKey: "显示快捷方式",
+    },
   },
   Export: {
     Title: "分享聊天记录",
@@ -108,6 +129,10 @@ const cn = {
     Image: {
       Toast: "正在生成截图",
       Modal: "长按或右键保存图片",
+    },
+    Artifacts: {
+      Title: "分享页面",
+      Error: "分享失败",
     },
   },
   Select: {
@@ -133,6 +158,7 @@ const cn = {
   Settings: {
     Title: "设置",
     SubTitle: "所有设置选项",
+    ShowPassword: "显示密码",
 
     Danger: {
       Reset: {
@@ -157,6 +183,11 @@ const cn = {
       Title: "字体大小",
       SubTitle: "聊天内容的字体大小",
     },
+    FontFamily: {
+      Title: "聊天字体",
+      SubTitle: "聊天内容的字体，若置空则应用全局默认字体",
+      Placeholder: "字体名称",
+    },
     InjectSystemPrompts: {
       Title: "注入系统级提示信息",
       SubTitle: "强制给每次请求的消息列表开头添加一个模拟 ChatGPT 的系统提示",
@@ -173,6 +204,8 @@ const cn = {
       IsChecking: "正在检查更新...",
       FoundUpdate: (x: string) => `发现新版本：${x}`,
       GoToUpdate: "前往更新",
+      Success: "更新成功！",
+      Failed: "更新失败",
     },
     SendKey: "发送键",
     Theme: "主题",
@@ -276,6 +309,13 @@ const cn = {
     },
 
     Access: {
+      SaasStart: {
+        Title: "使用 NextChat AI",
+        Label: "（性价比最高的方案）",
+        SubTitle:
+          "由 NextChat 官方维护, 零配置开箱即用，支持 OpenAI o1, GPT-4o, Claude-3.5 等最新大模型",
+        ChatNow: "立刻对话",
+      },
       AccessCode: {
         Title: "访问密码",
         SubTitle: "管理员已开启加密访问",
@@ -339,7 +379,7 @@ const cn = {
         ApiKey: {
           Title: "API 密钥",
           SubTitle: "从 Google AI 获取您的 API 密钥",
-          Placeholder: "输入您的 Google AI Studio API 密钥",
+          Placeholder: "Google AI API KEY",
         },
 
         Endpoint: {
@@ -351,6 +391,124 @@ const cn = {
           Title: "API 版本（仅适用于 gemini-pro）",
           SubTitle: "选择一个特定的 API 版本",
         },
+        GoogleSafetySettings: {
+          Title: "Google 安全过滤级别",
+          SubTitle: "设置内容过滤级别",
+        },
+      },
+      Baidu: {
+        ApiKey: {
+          Title: "API Key",
+          SubTitle: "使用自定义 Baidu API Key",
+          Placeholder: "Baidu API Key",
+        },
+        SecretKey: {
+          Title: "Secret Key",
+          SubTitle: "使用自定义 Baidu Secret Key",
+          Placeholder: "Baidu Secret Key",
+        },
+        Endpoint: {
+          Title: "接口地址",
+          SubTitle: "不支持自定义前往.env配置",
+        },
+      },
+      Tencent: {
+        ApiKey: {
+          Title: "API Key",
+          SubTitle: "使用自定义腾讯云API Key",
+          Placeholder: "Tencent API Key",
+        },
+        SecretKey: {
+          Title: "Secret Key",
+          SubTitle: "使用自定义腾讯云Secret Key",
+          Placeholder: "Tencent Secret Key",
+        },
+        Endpoint: {
+          Title: "接口地址",
+          SubTitle: "不支持自定义前往.env配置",
+        },
+      },
+      ByteDance: {
+        ApiKey: {
+          Title: "接口密钥",
+          SubTitle: "使用自定义 ByteDance API Key",
+          Placeholder: "ByteDance API Key",
+        },
+        Endpoint: {
+          Title: "接口地址",
+          SubTitle: "样例：",
+        },
+      },
+      Alibaba: {
+        ApiKey: {
+          Title: "接口密钥",
+          SubTitle: "使用自定义阿里云API Key",
+          Placeholder: "Alibaba Cloud API Key",
+        },
+        Endpoint: {
+          Title: "接口地址",
+          SubTitle: "样例：",
+        },
+      },
+      Moonshot: {
+        ApiKey: {
+          Title: "接口密钥",
+          SubTitle: "使用自定义月之暗面API Key",
+          Placeholder: "Moonshot API Key",
+        },
+        Endpoint: {
+          Title: "接口地址",
+          SubTitle: "样例：",
+        },
+      },
+      XAI: {
+        ApiKey: {
+          Title: "接口密钥",
+          SubTitle: "使用自定义XAI API Key",
+          Placeholder: "XAI API Key",
+        },
+        Endpoint: {
+          Title: "接口地址",
+          SubTitle: "样例：",
+        },
+      },
+      ChatGLM: {
+        ApiKey: {
+          Title: "接口密钥",
+          SubTitle: "使用自定义 ChatGLM API Key",
+          Placeholder: "ChatGLM API Key",
+        },
+        Endpoint: {
+          Title: "接口地址",
+          SubTitle: "样例：",
+        },
+      },
+      Stability: {
+        ApiKey: {
+          Title: "接口密钥",
+          SubTitle: "使用自定义 Stability API Key",
+          Placeholder: "Stability API Key",
+        },
+        Endpoint: {
+          Title: "接口地址",
+          SubTitle: "样例：",
+        },
+      },
+      Iflytek: {
+        ApiKey: {
+          Title: "ApiKey",
+          SubTitle: "从讯飞星火控制台获取的 APIKey",
+          Placeholder: "APIKey",
+        },
+        ApiSecret: {
+          Title: "ApiSecret",
+          SubTitle: "从讯飞星火控制台获取的 APISecret",
+          Placeholder: "APISecret",
+        },
+        Endpoint: {
+          Title: "接口地址",
+          SubTitle: "样例：",
+        },
       },
       CustomModel: {
         Title: "自定义模型名",
@@ -359,6 +517,10 @@ const cn = {
     },
 
     Model: "模型 (model)",
+    CompressModel: {
+      Title: "对话摘要模型",
+      SubTitle: "用于压缩历史记录、生成对话标题的模型",
+    },
     Temperature: {
       Title: "随机性 (temperature)",
       SubTitle: "值越大，回复越随机",
@@ -379,6 +541,59 @@ const cn = {
       Title: "频率惩罚度 (frequency_penalty)",
       SubTitle: "值越大，越有可能降低重复字词",
     },
+    TTS: {
+      Enable: {
+        Title: "启用文本转语音",
+        SubTitle: "启用文本生成语音服务",
+      },
+      Autoplay: {
+        Title: "启用自动朗读",
+        SubTitle: "自动生成语音并播放，需先开启文本转语音开关",
+      },
+      Model: "模型",
+      Engine: "转换引擎",
+      Voice: {
+        Title: "声音",
+        SubTitle: "生成语音时使用的声音",
+      },
+      Speed: {
+        Title: "速度",
+        SubTitle: "生成语音的速度",
+      },
+    },
+    Realtime: {
+      Enable: {
+        Title: "实时聊天",
+        SubTitle: "开启实时聊天功能",
+      },
+      Provider: {
+        Title: "模型服务商",
+        SubTitle: "切换不同的服务商",
+      },
+      Model: {
+        Title: "模型",
+        SubTitle: "选择一个模型",
+      },
+      ApiKey: {
+        Title: "API Key",
+        SubTitle: "API Key",
+        Placeholder: "API Key",
+      },
+      Azure: {
+        Endpoint: {
+          Title: "接口地址",
+          SubTitle: "接口地址",
+        },
+        Deployment: {
+          Title: "部署名称",
+          SubTitle: "部署名称",
+        },
+      },
+      Temperature: {
+        Title: "随机性 (temperature)",
+        SubTitle: "值越大，回复越随机",
+      },
+    },
   },
   Store: {
     DefaultTopic: "新的聊天",
@@ -393,8 +608,8 @@ const cn = {
     },
   },
   Copy: {
-    Success: "已写入剪切板",
-    Failed: "复制失败，请赋予剪切板权限",
+    Success: "已写入剪贴板",
+    Failed: "复制失败，请赋予剪贴板权限",
   },
   Download: {
     Success: "内容已下载到您的目录。",
@@ -407,11 +622,66 @@ const cn = {
     Clear: "上下文已清除",
     Revert: "恢复上下文",
   },
-  Plugin: {
-    Name: "插件",
+  Discovery: {
+    Name: "发现",
   },
   FineTuned: {
     Sysmessage: "你是一个助手",
+  },
+  SearchChat: {
+    Name: "搜索",
+    Page: {
+      Title: "搜索聊天记录",
+      Search: "输入搜索关键词",
+      NoResult: "没有找到结果",
+      NoData: "没有数据",
+      Loading: "加载中",
+
+      SubTitle: (count: number) => `搜索到 ${count} 条结果`,
+    },
+    Item: {
+      View: "查看",
+    },
+  },
+  Plugin: {
+    Name: "插件",
+    Page: {
+      Title: "插件",
+      SubTitle: (count: number) => `${count} 个插件`,
+      Search: "搜索插件",
+      Create: "新建",
+      Find: "您可以在Github上找到优秀的插件：",
+    },
+    Item: {
+      Info: (count: number) => `${count} 方法`,
+      View: "查看",
+      Edit: "编辑",
+      Delete: "删除",
+      DeleteConfirm: "确认删除？",
+    },
+    Auth: {
+      None: "不需要授权",
+      Basic: "Basic",
+      Bearer: "Bearer",
+      Custom: "自定义",
+      CustomHeader: "自定义参数名称",
+      Token: "Token",
+      Proxy: "使用代理",
+      ProxyDescription: "使用代理解决 CORS 错误",
+      Location: "位置",
+      LocationHeader: "Header",
+      LocationQuery: "Query",
+      LocationBody: "Body",
+    },
+    EditModal: {
+      Title: (readonly: boolean) => `编辑插件 ${readonly ? "（只读）" : ""}`,
+      Download: "下载",
+      Auth: "授权方式",
+      Content: "OpenAPI Schema",
+      Load: "从网页加载",
+      Method: "方法",
+      Error: "格式错误",
+    },
   },
   Mask: {
     Name: "面具",
@@ -446,6 +716,14 @@ const cn = {
       HideContext: {
         Title: "隐藏预设对话",
         SubTitle: "隐藏后预设对话不会出现在聊天界面",
+      },
+      Artifacts: {
+        Title: "启用Artifacts",
+        SubTitle: "启用之后可以直接渲染HTML页面",
+      },
+      CodeFold: {
+        Title: "启用代码折叠",
+        SubTitle: "启用之后可以自动折叠/展开过长的代码块",
       },
       Share: {
         Title: "分享此面具",
@@ -488,6 +766,61 @@ const cn = {
     Messages: "消息",
     Topic: "主题",
     Time: "时间",
+  },
+  SdPanel: {
+    Prompt: "画面提示",
+    NegativePrompt: "否定提示",
+    PleaseInput: (name: string) => `请输入${name}`,
+    AspectRatio: "横纵比",
+    ImageStyle: "图像风格",
+    OutFormat: "输出格式",
+    AIModel: "AI模型",
+    ModelVersion: "模型版本",
+    Submit: "提交生成",
+    ParamIsRequired: (name: string) => `${name}不能为空`,
+    Styles: {
+      D3Model: "3D模型",
+      AnalogFilm: "模拟电影",
+      Anime: "动漫",
+      Cinematic: "电影风格",
+      ComicBook: "漫画书",
+      DigitalArt: "数字艺术",
+      Enhance: "增强",
+      FantasyArt: "幻想艺术",
+      Isometric: "等角",
+      LineArt: "线描",
+      LowPoly: "低多边形",
+      ModelingCompound: "建模材料",
+      NeonPunk: "霓虹朋克",
+      Origami: "折纸",
+      Photographic: "摄影",
+      PixelArt: "像素艺术",
+      TileTexture: "贴图",
+    },
+  },
+  Sd: {
+    SubTitle: (count: number) => `共 ${count} 条绘画`,
+    Actions: {
+      Params: "查看参数",
+      Copy: "复制提示词",
+      Delete: "删除",
+      Retry: "重试",
+      ReturnHome: "返回首页",
+      History: "查看历史",
+    },
+    EmptyRecord: "暂无绘画记录",
+    Status: {
+      Name: "状态",
+      Success: "成功",
+      Error: "失败",
+      Wait: "等待中",
+      Running: "运行中",
+    },
+    Danger: {
+      Delete: "确认删除？",
+    },
+    GenerateParams: "生成参数",
+    Detail: "详情",
   },
 };
 
