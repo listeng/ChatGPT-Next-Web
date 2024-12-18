@@ -407,82 +407,12 @@ const chatglmModels = [
 let seq = 1000; // 内置的模型序号生成器从1000开始
 export const DEFAULT_MODELS = [
   {
-    name: "gpt-4o",
-    available: true,
-    sorted: seq++,
-    provider: {
-      id: "openai",
-      providerName: "OpenAI",
-      sorted: seq++,
-      providerType: "openai",
-    },
-  },
-  {
-    name: "gpt-4",
-    available: true,
-    sorted: seq++,
-    provider: {
-      id: "openai",
-      providerName: "OpenAI",
-      sorted: seq++,
-      providerType: "openai",
-    },
-  },
-  {
     name: "gpt-4o-mini",
     available: true,
     sorted: seq++,
     provider: {
       id: "openai",
       providerName: "OpenAI",
-      sorted: seq++,
-      providerType: "openai",
-    },
-  },
-  {
-    name: "ERNIE-4.0-Turbo-8K",
-    available: true,
-    sorted: seq++,
-    title: "文心一言 v4 Turbo 8k",
-    provider: {
-      id: "ERNIE-4.0-Turbo-8K",
-      providerName: "百度",
-      sorted: seq++,
-      providerType: "openai",
-    },
-  },
-  {
-    name: "ERNIE-4.0-8K-Latest",
-    available: true,
-    sorted: seq++,
-    title: "文心一言 v4",
-    provider: {
-      id: "ERNIE-4.0-8K-Latest",
-      providerName: "百度",
-      sorted: seq++,
-      providerType: "openai",
-    },
-  },
-  {
-    name: "moonshot-v1-8k",
-    available: true,
-    sorted: seq++,
-    title: "Kimi 8k",
-    provider: {
-      id: "moonshot-v1-8k",
-      providerName: "Kimi",
-      sorted: seq++,
-      providerType: "openai",
-    },
-  },
-  {
-    name: "grok",
-    available: true,
-    sorted: seq++,
-    title: "Grok-beta",
-    provider: {
-      id: "grok",
-      providerName: "X",
       sorted: seq++,
       providerType: "openai",
     },

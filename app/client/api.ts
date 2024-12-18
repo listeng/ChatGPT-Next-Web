@@ -195,6 +195,25 @@ export class ClientApi {
     }
   }
 
+  async models() {
+    const res = await fetch('/api/models', {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "GET",
+    });
+
+    console.log('models:')
+    console.log(res)
+
+    if (res.ok) {
+      const resJson = await res.json();
+      return resJson;
+    } else {
+      return null;
+    }
+  }
+
   async loginRedirectUrl() {
     const res = await fetch('/api/qylogin', {
       method: "GET",
