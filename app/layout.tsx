@@ -31,6 +31,8 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const serverConfig = getServerSideConfig();
+
   return (
     <html lang="en">
       <head>

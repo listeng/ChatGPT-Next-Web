@@ -93,33 +93,6 @@ export async function auth(req: NextRequest, modelProvider: ModelProvider) {
     req.headers.set("Authorization", `Bearer ${api_key}`);
   }
 
-  // if (serverConfig.hideUserApiKey && !!apiKey) {
-  //   return {
-  //     error: true,
-  //     msg: "you are not allowed to access with your own api key",
-  //   };
-  // }
-
-  // if user does not provide an api key, inject system api key
-  // if (!apiKey) {
-  //   const serverConfig = getServerSideConfig();
-
-  //   const systemApiKey =
-  //     modelProvider === ModelProvider.GeminiPro
-  //       ? serverConfig.googleApiKey
-  //       : serverConfig.isAzure
-  //       ? serverConfig.azureApiKey
-  //       : serverConfig.apiKey;
-  //   if (systemApiKey) {
-  //     console.log("[Auth] use system api key");
-  //     req.headers.set("Authorization", `Bearer ${systemApiKey}`);
-  //   } else {
-  //     console.log("[Auth] admin did not provide an api key");
-  //   }
-  // } else {
-  //   console.log("[Auth] use user api key");
-  // }
-
   return {
     error: false,
     msg: '',
