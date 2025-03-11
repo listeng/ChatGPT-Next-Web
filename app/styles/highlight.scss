@@ -18,10 +18,16 @@
     padding: 3px 5px;
   }
 
-  .hljs,
   pre {
     background: #1a1b26;
     color: #cbd2ea;
+  }
+
+  .hljs {
+    background: #1a1b26;
+    color: #cbd2ea;
+    white-space: pre-wrap !important;
+    word-wrap: break-word !important;
   }
 
   /*!
