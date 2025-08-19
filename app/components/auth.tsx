@@ -7,6 +7,7 @@ import { useAccessStore } from "../store";
 import Locale from "../locales";
 
 import BotIcon from "../icons/bot.svg";
+import WechatIcon from "../icons/wechat.svg";
 import { useEffect, useState } from "react";
 import { getClientConfig } from "../config/client";
 import { ClientApi } from "../client/api";
@@ -122,12 +123,18 @@ export function AuthPage() {
         />
       </div>
 
+      <div className={styles["auth-divider"]}></div>
+
       <div className={styles["auth-other"]}>
         <IconButton
+          icon={<WechatIcon />}
           text={Locale.Auth.ConfirmQYWechat}
           type="qywechat"
           onClick={async () => {await goQYChat()}}
         />
+      </div>
+
+      <div className={styles["auth-later"]}>
         <IconButton
           text={Locale.Auth.Later}
           onClick={() => {

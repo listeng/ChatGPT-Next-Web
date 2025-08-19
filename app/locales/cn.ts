@@ -1,6 +1,5 @@
 import { getClientConfig } from "../config/client";
 import { SubmitKey } from "../store/config";
-import { SAAS_CHAT_UTM_URL } from "@/app/constant";
 
 const isApp = !!getClientConfig()?.isApp;
 
@@ -16,10 +15,10 @@ const cn = {
     Title: "需要登录",
     Username: "用户名",
     Password: "密码",
-    Tips: "管理员开启了密码验证，请在下方登录",
+    Tips: "益玩同事请点击[企业微信登录]",
     SubTips: "或者输入你的 OpenAI 或 Google AI 密钥",
     Input: "在此处填写访问码",
-    Confirm: "确认登录",
+    Confirm: "登录",
     ConfirmQYWechat: "企业微信登录",
     Later: "稍后再说",
     Error: "登录失败！",

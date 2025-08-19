@@ -81,6 +81,9 @@
 
   .auth-input {
     margin: 2vh 0;
+    width: 100%;
+    max-width: 400px;
+    box-sizing: border-box;
   }
 
   .auth-input-second {
@@ -91,19 +94,58 @@
     display: flex;
     justify-content: center;
     flex-direction: column;
+    width: 100%;
+    max-width: 400px;
 
     button {
       margin-bottom: 10px;
+      width: 100%;
+    }
+  }
+
+  .auth-divider {
+    width: 100%;
+    max-width: 400px;
+    height: 1px;
+    background-color: #e0e0e0;
+    margin: 20px 0;
+    position: relative;
+
+    @media (prefers-color-scheme: dark) {
+      background-color: #404040;
+    }
+
+    [data-theme="dark"] & {
+      background-color: #404040;
+    }
+
+    [data-theme="light"] & {
+      background-color: #e0e0e0;
     }
   }
 
   .auth-other {
     display: flex;
-    flex-direction: row;
-    margin-top: 10px;
+    justify-content: center;
+    flex-direction: column;
+    width: 100%;
+    max-width: 400px;
 
     button {
-      margin: auto 10px;
+      margin-bottom: 10px;
+      width: 100%;
+    }
+  }
+
+  .auth-later {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    width: 100%;
+    max-width: 400px;
+
+    button {
+      width: 100%;
     }
   }
 }
